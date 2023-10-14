@@ -2,8 +2,16 @@ import { AuthRedirectWrapper } from 'wrappers';
 import { MxLink } from 'components/MxLink';
 import { RouteNamesEnum } from 'localConstants';
 import { Button } from 'components';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
+  const navigate = useNavigate();
+
+
+  const handleSearchButtonClick = () => {
+    navigate('/creator/1234')
+  };
+
   return (
     <AuthRedirectWrapper requireAuth={false}>
       <div className='flex flex-1 py-8 px-8 bg-white sm:flex-row items-center justify-center sm:px-20 min-h-screen'>
@@ -37,7 +45,7 @@ export const Home = () => {
             <input className="shadow appearance-none border rounded p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" type="text" placeholder="Search by: erd..." />
             <Button
               className='bg-blue-500 text-white font-semibold py-3 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700 w-auto'
-              onClick={() => { }}>
+              onClick={handleSearchButtonClick}>
               Search creator
             </Button>
 
