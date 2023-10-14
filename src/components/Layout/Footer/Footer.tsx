@@ -2,7 +2,7 @@ import HeartIcon from 'assets/img/heart.svg?react';
 
 export const Footer = () => {
   return (
-    <footer className='mx-auto w-full max-w-prose pb-6 pl-6 pr-6 text-center text-gray-400'>
+    <footer className='mx-auto w-full max-w-prose p-6 text-center text-gray-400'>
       <div className='flex flex-col items-center text sm text-gray-400'>
         <a
           className='text-gray-400 text-sm hover:cursor-pointer hover:underline'
@@ -15,8 +15,7 @@ export const Footer = () => {
           className='flex items-center text-sm hover:underline'
           href='https://multiversx.com/'
         >
-          Made with <HeartIcon className='mx-1 fill-gray-400' /> by the
-          MultiversX team
+          Made with <HeartIcon className='mx-1 fill-red-400' /> by DevOmr
         </a>
       </div>
     </footer>
