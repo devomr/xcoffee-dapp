@@ -4,5 +4,8 @@ export enum SessionEnum {
   rawPingPongSessionId = 'rawPingPongSessionId',
   abiPingPongSessionId = 'abiPingPongSessionId',
   abiPingPongServiceSessionId = 'abiPingPongServiceSessionId',
-  batchId = 'batchId'
+  batchId = 'batchId',
+
+  abiDonateSessionId = 'abiDonateSessionId',
+
 }

@@ -3,5 +3,5 @@ export enum RouteNamesEnum {
   dashboard = '/dashboard',
   unlock = '/unlock',
   disclaimer = '/disclaimer',
-  creatorProfile = '/creator/:address'
+  creatorProfile = '/creator/:creatorAddress'
 }

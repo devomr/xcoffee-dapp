@@ -1,22 +1,18 @@
 import { DonationForm } from 'components/Creator/DonationForm';
 import { DonationItem } from 'components/Creator/DonationItem/DonationItem';
-import { DonationTransaction } from 'types/donationTransaction.types';
 import { SetStateAction, useState } from 'react';
 import { Tab } from 'components/Tab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
+import { transactions } from 'services/transactions.service';
+import { creators } from 'services/creators.service';
+import { useParams } from 'react-router-dom';
+import { Creator } from 'types/creator.types';
 
-
-
-
-
-
-const transactions: DonationTransaction[] = [
-  { id: '1', supporter: 'John', amount: 0.2, message: 'Great content' },
-  { id: '2', supporter: 'Bob', amount: 0.2, message: 'Great content' },
-];
 
 export const CreatorProfile = () => {
+  const { creatorAddress } = useParams();
+
   const [activeTab, setActiveTab] = useState('supporters');
 
   const changeTab = (tab: SetStateAction<string>) => {
@@ -31,6 +27,23 @@ export const CreatorProfile = () => {
     navigator.clipboard.writeText(window.location.href);
   }
 
+  const getCreatorAvatarLetters = (creator: Creator) => {
+    const firstNameLetter = creator.firstName.length > 0 ? creator.firstName.charAt(0) : '';
+    const lastNameLetter = creator.lastName.length > 0 ? creator.lastName.charAt(0) : '';
+    return `${firstNameLetter}${lastNameLetter}`;
+  };
+
+  const currentCreator = creators.find(creator => creator.address === creatorAddress);
+
+  if (!currentCreator) {
+    return (
+      <div className='relative px-8 min-h-screen sm:px-20'>
+        Creator was not found
+      </div>
+    );
+  }
+
+  const creatorTransactions = transactions.filter(transaction => transaction.receiverAddress === currentCreator.address);
 
   return (
     <div className='relative px-8 min-h-screen sm:px-20'>
@@ -41,13 +54,13 @@ export const CreatorProfile = () => {
             <div className='flex justify-between'>
               <div className='flex gap-2 items-center mb-3'>
                 <div className="w-14 h-14 flex items-center justify-center bg-blue-500 rounded-full text-white font-bold text-xl">
-                  MO
+                  {getCreatorAvatarLetters(currentCreator)}
                 </div>
                 <h1 className='text-2xl font-extrabold leading-snug'>
-                  Marius Oprea
+                  {currentCreator.firstName} {currentCreator.lastName}
                 </h1>
                 <div className="group relative">
-                  <FontAwesomeIcon className='text-gray-500 cursor-pointer' icon={faCopy} size='sm' onClick={() => handleCopyButtonClick('erd1mgvcl88gxetn7jls87jgpgwwjklesa8eynmhce6ejw950chkd6wslh6fw3')} />
+                  <FontAwesomeIcon className='text-gray-500 cursor-pointer' icon={faCopy} size='sm' onClick={() => handleCopyButtonClick(currentCreator.address)} />
                   <div className="hidden group-hover:block group-hover:no-underline absolute bg-gray-800 text-white text-xs py-1 px-2 rounded top-8 left-1/2 transform -translate-x-1/2">
                     Copy address
                   </div>
@@ -62,10 +75,12 @@ export const CreatorProfile = () => {
             <div className='flex my-3'>
               <div className='flex gap-2 items-center'>
                 <FontAwesomeIcon className='text-gray-500' icon={faHeart} size='sm' />
-                <span>12 supporters</span>
+                <span>{currentCreator.supporters} supporters</span>
               </div>
             </div>
-            <p className='text-gray-500 mb-5'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium ducimus nihil maxime pariatur? Dolorum vitae quasi modi! Pariatur, ab sunt?</p>
+            <p className='text-gray-500 mb-5'>
+              {currentCreator.description}
+            </p>
           </div>
 
           <div className="w-full mx-auto">
@@ -91,11 +106,18 @@ export const CreatorProfile = () => {
             </div>
 
             <div className="mt-4">
-              {activeTab === 'supporters' && <div>
-                {transactions.map((item) => (
-                  <DonationItem key={item.id} donationTransaction={item} />
-                ))}
-              </div>}
+              {activeTab === 'supporters' && (
+                <div>
+                  {creatorTransactions && creatorTransactions.length > 0 ? (
+                    creatorTransactions.map((item) => (
+                      <DonationItem key={item.id} donationTransaction={item} />
+                    ))
+                  ) : (
+                    'No transactions available'
+                  )}
+                </div>
+              )}
+
               {activeTab === 'posts' && <div>
                 Comming soon!
               </div>}
@@ -104,12 +126,10 @@ export const CreatorProfile = () => {
               </div>}
             </div>
           </div>
-
-
         </div>
 
         <div className='flex justify-end sm:w-1/3'>
-          <DonationForm />
+          <DonationForm creator={currentCreator} />
         </div>
       </div>
     </div>

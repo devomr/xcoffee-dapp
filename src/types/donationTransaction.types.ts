@@ -1,7 +1,8 @@
 export type DonationTransaction = {
-    id: string;
-    supporter: string;
-    amount: number;
-    message: string;
-  };
-  
+  id: string;
+  name: string;
+  amount: number;
+  message: string;
+  txHash: string;
+  receiverAddress: string;
+};
