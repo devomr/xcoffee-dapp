@@ -2,46 +2,16 @@ import { faMoneyCheck, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import BarChart from 'components/BarChart/BarChart';
 import { StatsWidget } from 'components/StatsWidget';
 import { useGetAccountInfo } from 'hooks';
+import { useGetCreatorAccountInfo } from 'hooks/useGetCreatorAccountInfo';
 import { RouteNamesEnum } from 'localConstants';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { findCreatorByAddress } from 'services/creators.service';
-import { Creator } from 'types/creator.types';
-import { AuthRedirectWrapper, PageWrapper } from 'wrappers';
+import { AuthRedirectWrapper } from 'wrappers';
 
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { address } = useGetAccountInfo();
-
-  // state for current logged in creator
-  const [currentCreator, setCurrentCreator] = useState<Creator | null>(null);
-  console.log(address)
-
-
-  const fetchCreatorByAddress = async (address: string) => {
-    const response = await findCreatorByAddress(address);
-
-    if (!response) {
-      navigate(RouteNamesEnum.home);
-      return;
-    }
-
-    // set the creator
-    setCurrentCreator(response.data);
-  };
-
-  useEffect(() => {
-    // get details of the current creator from off-chain
-    fetchCreatorByAddress(address);
-
-    const redirect = sessionStorage.getItem('xcoffee:redirect');
-
-    if (redirect == 'create-profile') {
-      navigate(RouteNamesEnum.createProfile);
-    }
-
-  }, []);
+  const { creator, loading, error } = useGetCreatorAccountInfo(address);
 
   const data = [
     { timestamp: '2023-01-01', count: 10 },
@@ -50,12 +20,27 @@ export const Dashboard = () => {
     // Add more data points here
   ];
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!creator || !creator.active) {
+    // If the creator is not active, he did not setup his profile
+    // Redirect to the setup profile page
+    navigate(RouteNamesEnum.setupProfile);
+    return null;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <AuthRedirectWrapper>
+    <AuthRedirectWrapper requireAuth={true}>
       <div className='px-8 mt-5 min-h-screen sm:px-20'>
         <div className='flex flex-1 flex-col rounded bg-white p-6 '>
           <h1 className='text-xl font-extrabold leading-snug mb-5'>
-            Welcome, {currentCreator?.firstName} {currentCreator?.lastName}!
+            Welcome, {creator?.firstName} {creator?.lastName}!
           </h1>
           <div className='flex gap-5 mb-10'>
             <StatsWidget title={'Supporters'} count={5} icon={faPeopleGroup}></StatsWidget>

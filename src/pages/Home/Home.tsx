@@ -1,12 +1,12 @@
 import { AuthRedirectWrapper } from 'wrappers';
 import { Button } from 'components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CreatorCard } from './CreatorCard';
 import { findCreatorByAddress, findTopSupportedCreators } from 'services/creators.service';
 import { useEffect, useState } from 'react';
 import { RouteNamesEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
-import { buildRouteWithCallback } from 'helpers';
+import { buildRouteWithCallback } from 'utils';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -50,8 +50,7 @@ export const Home = () => {
   };
 
   const handleCreateProfile = () => {
-    sessionStorage.setItem('xcoffee:redirect', 'create-profile');
-    navigate(buildRouteWithCallback(RouteNamesEnum.unlock, RouteNamesEnum.createProfile));
+    navigate(buildRouteWithCallback(RouteNamesEnum.unlock, RouteNamesEnum.setupProfile));
   };
 
   return (
@@ -80,7 +79,7 @@ export const Home = () => {
 
           <div className='flex flex-row gap-2'>
             <input className="shadow appearance-none border rounded p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" type="text" placeholder="Search by: erd..."
-              value={search} onChange={(e) => setSearch(e.target.value)} />
+              name='address' value={search} onChange={(e) => setSearch(e.target.value)} />
             <Button
               className='bg-blue-700 text-white font-semibold py-3 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700 w-auto'
               onClick={handleSearchButtonClick}>

@@ -3,6 +3,7 @@ export enum RouteNamesEnum {
   dashboard = '/dashboard',
   unlock = '/unlock',
   disclaimer = '/disclaimer',
-  createProfile = '/create-profile',
+  setupProfile = '/setup-profile',
+  settings = '/settings',
   creatorProfile = '/creator/:creatorAddress'
 }

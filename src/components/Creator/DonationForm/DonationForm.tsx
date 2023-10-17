@@ -4,7 +4,7 @@ import { useGetIsLoggedIn, useGetPendingTransactions, useSendDonateTransaction }
 import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
 import { Link, useLocation } from 'react-router-dom';
-import { buildRouteWithCallback } from 'helpers';
+import { buildRouteWithCallback } from 'utils';
 
 interface DonnationFromProps {
   creator: Creator;

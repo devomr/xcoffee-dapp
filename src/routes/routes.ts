@@ -1,7 +1,8 @@
 import { RouteNamesEnum } from 'localConstants';
 import { Dashboard, Disclaimer, Home } from 'pages';
-import { CreateProfile } from 'pages/CreateProfile';
+import { SetupProfile } from 'pages/SetupProfile';
 import { CreatorProfile } from 'pages/CreatorProfile';
+import { Settings } from 'pages/Settings';
 import { RouteType } from 'types';
 
 interface RouteWithTitleType extends RouteType {
@@ -25,13 +26,18 @@ export const routes: RouteWithTitleType[] = [
     component: Disclaimer
   },
   {
-    path: RouteNamesEnum.createProfile,
-    title: 'Create profile',
-    component: CreateProfile
+    path: RouteNamesEnum.setupProfile,
+    title: 'Setup profile',
+    component: SetupProfile
   },
   {
     path: RouteNamesEnum.creatorProfile,
     title: 'Creator Profile',
     component: CreatorProfile
+  },
+  {
+    path: RouteNamesEnum.settings,
+    title: 'Settings',
+    component: Settings
   }
 ];

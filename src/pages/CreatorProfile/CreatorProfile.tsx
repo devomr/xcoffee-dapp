@@ -72,8 +72,8 @@ export const CreatorProfile = () => {
   return (
     <div className='relative px-8 min-h-screen sm:px-20'>
       <div className='absolute top-0 left-0 bg-blue-600 w-full h-1/3'></div>
-      <div className='relative flex flex-1 gap-6 items-start justify-between mt-10 sm:flex-row'>
-        <div className='flex flex-col bg-white p-6 rounded-md shadow-md sm:w-2/3'>
+      <div className='relative flex flex-col gap-6 items-start justify-between mt-10 md:flex-row'>
+        <div className='flex flex-col bg-white p-6 rounded-md shadow-md w-full md:w-2/3'>
           <div className='mb-5'>
             <div className='flex justify-between'>
               <div className='flex gap-2 items-center mb-3'>
@@ -145,7 +145,7 @@ export const CreatorProfile = () => {
           </div>
         </div>
 
-        <div className='flex justify-end sm:w-1/3'>
+        <div className='flex justify-end w-full md:w-1/3'>
           <DonationForm creator={currentCreator} />
         </div>
       </div>
