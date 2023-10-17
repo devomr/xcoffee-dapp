@@ -12,19 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
           ref: main
+
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+
       - name: Install dependencies
-      - run: npm install
+        run: npm install
+
       - name: Build
-      - run: npm run build:devnet
+        run: npm run build:devnet
         env:
           CI: false
+
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.email "dev.omr95@gmail.com"
