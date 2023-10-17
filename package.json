@@ -1,7 +1,6 @@
 {
   "name": "@devomr/xcoffee-dapp",
   "description": "xCoffee dApp",
-  "homepage": ".",
   "version": "1.0.0",
   "author": "devomr",
   "license": "GPL-3.0-or-later",
