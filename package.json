@@ -1,6 +1,7 @@
 {
   "name": "@devomr/xcoffee-dapp",
   "description": "xCoffee dApp",
+  "homepage": "https://devomr.github.io/xcoffee-dapp",
   "version": "1.0.0",
   "author": "devomr",
   "license": "GPL-3.0-or-later",
