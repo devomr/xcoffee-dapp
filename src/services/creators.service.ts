@@ -1,19 +1,36 @@
+import axios from 'axios';
+import { API_URL } from 'config';
 import { Creator } from 'types/creator.types';
 
-export const creators: Creator[] = [
-  {
-    address: 'erd1mgvcl88gxetn7jls87jgpgwwjklesa8eynmhce6ejw950chkd6wslh6fw3',
-    firstName: 'John',
-    lastName: 'Smith',
-    description:
-      'This is my super awesome page. Press on the button to support me',
-    supporters: 3
-  },
-  {
-    address: 'erd1kpuhar303lljzt4ldmvh7267mjp8txz38v5v08jnxremfmg593esgt7ddh',
-    firstName: 'Michael',
-    lastName: 'The first',
-    description: 'I have no description',
-    supporters: 100
+export const saveProfile = async (creator: Creator) => {
+  // userData is an object containing the user data to be sent in the request body
+
+  try {
+    const response = await axios.post(`${API_URL}/creators`, creator);
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    throw error;
   }
-];
+};
+
+export const findCreatorByAddress = async (address: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/creators/search/${address}`);
+    return response;
+  } catch (error) {
+    // Handle errors here
+    console.error(error);
+  }
+};
+
+export const findTopSupportedCreators = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/creators/top-supported`);
+
+    return response;
+  } catch (error) {
+    // Handle errors here
+    console.error(error);
+  }
+};

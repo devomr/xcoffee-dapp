@@ -14,6 +14,7 @@ import {
 } from 'components/sdkDappComponents';
 import { nativeAuth } from 'config';
 import { RouteNamesEnum } from 'localConstants';
+import { useLocation } from 'react-router-dom';
 import { AuthRedirectWrapper } from 'wrappers';
 
 type CommonPropsType =
@@ -29,6 +30,14 @@ const commonProps: CommonPropsType = {
 };
 
 export const Unlock = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const paramValue = queryParams.get('callbackRoute');
+
+  if (paramValue) {
+    commonProps.callbackRoute = paramValue;
+  }
+
   return (
     <AuthRedirectWrapper requireAuth={false}>
       <div className='flex justify-center items-center'>

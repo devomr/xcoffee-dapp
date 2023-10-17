@@ -1,31 +1,27 @@
 import { DonationForm } from 'components/Creator/DonationForm';
 import { DonationItem } from 'components/Creator/DonationItem/DonationItem';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Tab } from 'components/Tab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
-import { transactions } from 'services/transactions.service';
-import { creators } from 'services/creators.service';
-import { useParams } from 'react-router-dom';
+import { faArrowUpRightFromSquare, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
+import { findDonationsHistory, getCountOfSupporters } from 'services/transactions.service';
+import { findCreatorByAddress } from 'services/creators.service';
+import { Link, useParams } from 'react-router-dom';
 import { Creator } from 'types/creator.types';
+import { DonationTransaction } from 'types/donationTransaction.types';
+import { EXPLORER_URL } from 'config';
 
 
 export const CreatorProfile = () => {
   const { creatorAddress } = useParams();
-
+  const [currentCreator, setCurrentCreator] = useState<Creator | null>(null);
+  const [donationsTransactions, setDonationsTransactions] = useState<DonationTransaction[]>([]);
+  const [supportersCount, setSupportersCount] = useState<number>(0);
   const [activeTab, setActiveTab] = useState('supporters');
 
   const changeTab = (tab: SetStateAction<string>) => {
     setActiveTab(tab);
   };
-
-  const handleCopyButtonClick = (address: string) => {
-    navigator.clipboard.writeText(address);
-  };
-
-  const handleShareButtonClick = () => {
-    navigator.clipboard.writeText(window.location.href);
-  }
 
   const getCreatorAvatarLetters = (creator: Creator) => {
     const firstNameLetter = creator.firstName.length > 0 ? creator.firstName.charAt(0) : '';
@@ -33,7 +29,36 @@ export const CreatorProfile = () => {
     return `${firstNameLetter}${lastNameLetter}`;
   };
 
-  const currentCreator = creators.find(creator => creator.address === creatorAddress);
+  const fetchCreatorByAddress = async (address: string) => {
+    const response = await findCreatorByAddress(address);
+
+    if (!response) {
+      alert('Creator not found');
+      return;
+    }
+
+    const creator: Creator = response.data;
+    setCurrentCreator(creator);
+  };
+
+  const fetchCountOfSupporters = async (address: string) => {
+    const response = await getCountOfSupporters(address);
+    setSupportersCount(response?.data)
+  };
+
+  const fetchDonationsHistory = async (address: string) => {
+    const response = await findDonationsHistory(address);
+    setDonationsTransactions(response?.data)
+  };
+
+  useEffect(() => {
+    if (creatorAddress) {
+      fetchCreatorByAddress(creatorAddress);
+      fetchCountOfSupporters(creatorAddress);
+      fetchDonationsHistory(creatorAddress);
+    }
+  }, []);
+
 
   if (!currentCreator) {
     return (
@@ -43,7 +68,6 @@ export const CreatorProfile = () => {
     );
   }
 
-  const creatorTransactions = transactions.filter(transaction => transaction.receiverAddress === currentCreator.address);
 
   return (
     <div className='relative px-8 min-h-screen sm:px-20'>
@@ -59,23 +83,16 @@ export const CreatorProfile = () => {
                 <h1 className='text-2xl font-extrabold leading-snug'>
                   {currentCreator.firstName} {currentCreator.lastName}
                 </h1>
-                <div className="group relative">
-                  <FontAwesomeIcon className='text-gray-500 cursor-pointer' icon={faCopy} size='sm' onClick={() => handleCopyButtonClick(currentCreator.address)} />
-                  <div className="hidden group-hover:block group-hover:no-underline absolute bg-gray-800 text-white text-xs py-1 px-2 rounded top-8 left-1/2 transform -translate-x-1/2">
-                    Copy address
-                  </div>
-                </div>
+                <Link to={EXPLORER_URL + '/accounts/' + creatorAddress} target='_blank'>
+                  <FontAwesomeIcon className='text-gray-500 cursor-pointer' icon={faArrowUpRightFromSquare} size='sm' />
+                </Link>
               </div>
-              <div>
-                <button className="bg-blue-400 hover:bg-blue-700 text-white w-10 h-10 rounded-full">
-                  <FontAwesomeIcon icon={faShare} size='sm' onClick={handleShareButtonClick} />
-                </button>
-              </div>
+
             </div>
             <div className='flex my-3'>
               <div className='flex gap-2 items-center'>
                 <FontAwesomeIcon className='text-gray-500' icon={faHeart} size='sm' />
-                <span>{currentCreator.supporters} supporters</span>
+                <span>{supportersCount} supporters</span>
               </div>
             </div>
             <p className='text-gray-500 mb-5'>
@@ -108,9 +125,9 @@ export const CreatorProfile = () => {
             <div className="mt-4">
               {activeTab === 'supporters' && (
                 <div>
-                  {creatorTransactions && creatorTransactions.length > 0 ? (
-                    creatorTransactions.map((item) => (
-                      <DonationItem key={item.id} donationTransaction={item} />
+                  {donationsTransactions && donationsTransactions.length > 0 ? (
+                    donationsTransactions.map((item) => (
+                      <DonationItem key={item.txHash} donationTransaction={item} />
                     ))
                   ) : (
                     'No transactions available'

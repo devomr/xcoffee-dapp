@@ -3,5 +3,4 @@ export type Creator = {
   firstName: string;
   lastName: string;
   description: string;
-  supporters: number;
 };

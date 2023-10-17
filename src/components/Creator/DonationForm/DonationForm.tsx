@@ -1,35 +1,52 @@
 import { useState } from 'react';
-import { Button } from 'components';
+import { Button, MxLink } from 'components';
 import { useGetIsLoggedIn, useGetPendingTransactions, useSendDonateTransaction } from 'hooks';
-import { SessionEnum } from 'localConstants';
+import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
+import { Link, useLocation } from 'react-router-dom';
+import { buildRouteWithCallback } from 'helpers';
 
 interface DonnationFromProps {
   creator: Creator;
 }
 
 export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
-  const [amount, setAmount] = useState(0.1);
-  const [message, setMessage] = useState('');
+  const location = useLocation();
   const isLoggedIn = useGetIsLoggedIn();
-
   const { hasPendingTransactions } = useGetPendingTransactions();
   const {
-    sendDonateTransactionFromAbi,
-    transactionStatus
+    sendDonateTransactionFromAbi
   } = useSendDonateTransaction(SessionEnum.abiDonateSessionId);
 
 
-  // 👇️ called every time input's value changes
-  const handleAmountChange = (event: { target: { value: string; }; }) => {
-    setAmount(parseFloat(event.target.value));
-  };
+  const [donationState, setDonationState] = useState({
+    amount: 0.1,
+    name: '',
+    message: ''
+  });
+
+  const [donationFormValid, setDonationFormValid] = useState(false);
+
+  const handleDonationFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+
+    setDonationState({
+      ...donationState,
+      [name]: value
+    });
+
+
+    // Validate the form after updating the state
+    const isAmountValid = donationState.amount >= 0.1;
+    const isNameValid = name === 'name' ? value.length > 0 : false;
+    setDonationFormValid(isNameValid && isAmountValid);
+
+  }
 
   const onSendDonateTransaction = async () => {
-    let convertedAmount = (Math.pow(10, 18) * amount).toString(10);
+    let convertedAmount = (Math.pow(10, 18) * donationState.amount).toString(10);
     let receiverAddress = creator.address;
-    let name = 'MyName';
-    await sendDonateTransactionFromAbi(receiverAddress, name, message, convertedAmount);
+    await sendDonateTransactionFromAbi(receiverAddress, donationState.name, donationState.message, convertedAmount);
   };
 
 
@@ -44,22 +61,36 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
           </div>
           <div>
             <input className="text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-20 max-w-full" type="number" min={0.1}
-              step={0.1} onChange={handleAmountChange}
-              value={amount} />
+              step={0.1} name="amount" value={donationState.amount} onChange={handleDonationFormChange} />
           </div>
         </div>
 
-        <textarea className="border border-grey-200 rounded p-3 resize-none w-full" placeholder='Add your message (optional)' rows={5} value={message}
-          onChange={(e) => setMessage(e.target.value)}
+        <div>
+          <input className="border border-grey-200 rounded p-3 mb-3 resize-none w-full" type="text" placeholder='Add your name (required)'
+            name="name" value={donationState.name} onChange={handleDonationFormChange} required />
+        </div>
+        <textarea className="border border-grey-200 rounded p-3 mb-3 resize-none w-full" placeholder='Add your message (optional)' rows={5} name="message" value={donationState.message} onChange={handleDonationFormChange}
         ></textarea>
 
-        <Button
-          className='bg-blue-500 text-white font-semibold py-3 px-4 rounded w-full focus:outline-none hover:bg-blue-100 hover:text-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-70'
-          disabled={!isLoggedIn || hasPendingTransactions}
-          onClick={onSendDonateTransaction}>
-          Support now ({amount} EGLD)
-        </Button>
+        <div className=''>
+          {isLoggedIn ? (
+            <Button
+              className='bg-blue-500 text-white font-semibold py-3 px-4 rounded w-full focus:outline-none hover:bg-blue-100 hover:text-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-70'
+              disabled={hasPendingTransactions || !donationFormValid}
+              onClick={onSendDonateTransaction}>
+              Support now ({donationState.amount} EGLD)
+            </Button>
+          ) : (
+
+            <Link to={buildRouteWithCallback(RouteNamesEnum.unlock, location.pathname)}
+              className='bg-blue-500 text-white text-center font-semibold py-3 px-4 rounded w-full block focus:outline-none hover:bg-blue-100 hover:text-blue-700 '>
+              Connect wallet to support
+            </Link>
+          )}
+        </div>
+
+
       </form>
-    </div>
+    </div >
   );
 };

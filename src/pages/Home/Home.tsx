@@ -1,25 +1,57 @@
 import { AuthRedirectWrapper } from 'wrappers';
-import { MxLink } from 'components/MxLink';
-import { RouteNamesEnum } from 'localConstants';
 import { Button } from 'components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CreatorCard } from './CreatorCard';
-import { creators } from 'services/creators.service';
-import { useState } from 'react';
+import { findCreatorByAddress, findTopSupportedCreators } from 'services/creators.service';
+import { useEffect, useState } from 'react';
+import { RouteNamesEnum } from 'localConstants';
+import { Creator } from 'types/creator.types';
+import { buildRouteWithCallback } from 'helpers';
 
 export const Home = () => {
   const navigate = useNavigate();
 
+  // State for showing Top 10 creators orderd by supporters
+  const [topSupportedCreators, setTopSupportedCreators] = useState<Creator[]>([]);
+
+  // State for search input
   const [search, setSearch] = useState('');
 
-  const handleSearchButtonClick = () => {
-    const currentCreator = creators.find(creator => creator.address === search);
-    if (!currentCreator) {
+  const fetchTopSupportedCreators = async () => {
+    try {
+      const response = await findTopSupportedCreators();
+
+      if (!response) {
+        return;
+      }
+
+      setTopSupportedCreators(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopSupportedCreators();
+  }, []);
+
+
+
+  const handleSearchButtonClick = async () => {
+    const response = await findCreatorByAddress(search);
+
+    if (!response) {
       alert('Creator not found');
       return;
     }
 
-    navigate(`/creator/${currentCreator.address}`);
+    const creator: Creator = response.data;
+    navigate(`/creator/${creator.address}`);
+  };
+
+  const handleCreateProfile = () => {
+    sessionStorage.setItem('xcoffee:redirect', 'create-profile');
+    navigate(buildRouteWithCallback(RouteNamesEnum.unlock, RouteNamesEnum.createProfile));
   };
 
   return (
@@ -32,10 +64,12 @@ export const Home = () => {
           <p className='text-lg text-gray-500 mb-5'>
             Engage with your audience and easily get support from them in crypto currencies.
           </p>
-          <MxLink to={RouteNamesEnum.unlock}
-            className='bg-blue-700 text-white font-semibold py-3 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700'>
+          <Button
+            className='bg-blue-700 text-white font-semibold py-3 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700 w-auto'
+            onClick={handleCreateProfile}>
             Create my xCoffee profile
-          </MxLink>
+          </Button>
+
         </div>
       </div>
 
@@ -61,11 +95,16 @@ export const Home = () => {
         <div className='flex flex-1 flex-col items-center'>
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Who is using our app?</h2>
           <p className='text-md text-gray-500 mb-5'>See bellow what creators are using our app and support your favorites</p>
-
-          <div className='grid grid-cols-3 gap-10'>
-            {creators.map((creator) => (
-              <CreatorCard key={creator.address} creator={creator} />
-            ))}
+          <div>
+            {topSupportedCreators.length === 0 ? (
+              <p>No results found.</p>
+            ) : (
+              <div className='grid grid-cols-3 gap-10'>
+                {topSupportedCreators.map((creator) => (
+                  <CreatorCard key={creator.address} creator={creator} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

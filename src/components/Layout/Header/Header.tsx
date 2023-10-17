@@ -1,15 +1,19 @@
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'components/Button';
 import { MxLink } from 'components/MxLink';
-import { logout } from 'helpers';
+import { buildRouteWithCallback, logout } from 'helpers';
 import { useGetIsLoggedIn } from 'hooks';
 import { RouteNamesEnum } from 'localConstants';
+import { useLocation } from 'react-router-dom';
 
 export const Header = () => {
+  const location = useLocation();
   const isLoggedIn = useGetIsLoggedIn();
 
   const handleLogout = () => {
     sessionStorage.clear();
-    logout(`${window.location.origin}/unlock`, undefined, false);
+    logout(`${window.location.origin}`, undefined, false);
   };
 
   return (
@@ -27,12 +31,13 @@ export const Header = () => {
           {isLoggedIn ? (
             <Button
               onClick={handleLogout}
-              className='inline-block rounded-lg px-3 py-2 text-center hover:no-underline my-0 text-gray-600 hover:bg-slate-100 mx-0'
+              className='flex gap-3 items-center rounded-lg px-3 py-2 text-center hover:no-underline my-0 text-gray-600 hover:bg-slate-100 mx-0'
             >
-              Close
+              <FontAwesomeIcon className='text-gray-500' icon={faPowerOff} size='sm' />
+              Disconnect
             </Button>
           ) : (
-            <MxLink to={RouteNamesEnum.unlock}
+            <MxLink to={buildRouteWithCallback(RouteNamesEnum.unlock, location.pathname)}
               className='border border-blue-700 text-blue-700 font-semibold py-2 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700'>
               Connect Wallet
             </MxLink>
