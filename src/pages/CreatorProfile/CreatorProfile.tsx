@@ -1,5 +1,5 @@
-import { DonationForm } from 'components/Creator/DonationForm';
-import { DonationItem } from 'components/Creator/DonationItem/DonationItem';
+import { DonationForm } from 'pages/CreatorProfile/components/DonationForm';
+import { DonationItem } from 'pages/CreatorProfile/components/DonationItem/DonationItem';
 import { SetStateAction, useEffect, useState } from 'react';
 import { Tab } from 'components/Tab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,4 +1,4 @@
-import { DonationItem } from 'components/Creator/DonationItem';
+import { DonationItem } from 'pages/CreatorProfile/components/DonationItem';
 import { DonationTransaction } from 'types/donationTransaction.types';
 
 interface RecentSupportersProps {
