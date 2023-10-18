@@ -10,6 +10,9 @@ import { Link, useParams } from 'react-router-dom';
 import { Creator } from 'types/creator.types';
 import { DonationTransaction } from 'types/donationTransaction.types';
 import { EXPLORER_URL } from 'config';
+import { MembershipPlans } from './components/MembershipPlans';
+import { RecentSupporters } from './components/RecentSupporters';
+import { MemberPosts } from './components/MemberPosts';
 
 
 export const CreatorProfile = () => {
@@ -71,7 +74,7 @@ export const CreatorProfile = () => {
 
   return (
     <div className='relative px-8 min-h-screen sm:px-20'>
-      <div className='absolute top-0 left-0 bg-blue-600 w-full h-1/3'></div>
+      <div className='absolute top-0 left-0 bg-blue-600 w-full h-[300px]'></div>
       <div className='relative flex flex-col gap-6 items-start justify-between mt-10 md:flex-row'>
         <div className='flex flex-col bg-white p-6 rounded-md shadow-md w-full md:w-2/3'>
           <div className='mb-5'>
@@ -124,22 +127,14 @@ export const CreatorProfile = () => {
 
             <div className="mt-4">
               {activeTab === 'supporters' && (
-                <div>
-                  {donationsTransactions && donationsTransactions.length > 0 ? (
-                    donationsTransactions.map((item) => (
-                      <DonationItem key={item.txHash} donationTransaction={item} />
-                    ))
-                  ) : (
-                    'No transactions available'
-                  )}
-                </div>
+                <RecentSupporters donationsTransactions={donationsTransactions} />
               )}
 
               {activeTab === 'posts' && <div>
-                Comming soon!
+                <MemberPosts posts={[]} />
               </div>}
               {activeTab === 'membership' && <div>
-                Comming soon!
+                <MembershipPlans />
               </div>}
             </div>
           </div>
