@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Creator } from 'types/creator.types';
 import { Button } from 'components';
 import { useNavigate } from 'react-router-dom';
@@ -31,10 +29,6 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({ creator }) => {
           <h1 className='text-xl font-extrabold leading-snug'>
             {creator.firstName} {creator.lastName}
           </h1>
-          <div className='flex gap-2 items-center'>
-            <FontAwesomeIcon className='text-gray-500' icon={faHeart} size='sm' />
-            <span>{creator.supporters} supporters</span>
-          </div>
         </div>
       </div>
       <div className='mb-3'>

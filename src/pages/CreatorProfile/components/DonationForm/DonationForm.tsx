@@ -25,8 +25,6 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
     message: ''
   });
 
-  const [donationFormValid, setDonationFormValid] = useState(false);
-
   const handleDonationFormChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
 
@@ -34,13 +32,6 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
       ...donationState,
       [name]: value
     });
-
-
-    // Validate the form after updating the state
-    const isAmountValid = donationState.amount >= 0.1;
-    const isNameValid = name === 'name' ? value.length > 0 : false;
-    setDonationFormValid(isNameValid && isAmountValid);
-
   }
 
   const onSendDonateTransaction = async () => {
@@ -76,7 +67,7 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
           {isLoggedIn ? (
             <Button
               className='bg-blue-500 text-white font-semibold py-3 px-4 rounded w-full focus:outline-none hover:bg-blue-100 hover:text-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-70'
-              disabled={hasPendingTransactions || !donationFormValid}
+              disabled={hasPendingTransactions}
               onClick={onSendDonateTransaction}>
               Support now ({donationState.amount} EGLD)
             </Button>

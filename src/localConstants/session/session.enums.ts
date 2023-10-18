@@ -7,5 +7,5 @@ export enum SessionEnum {
   batchId = 'batchId',
 
   abiDonateSessionId = 'abiDonateSessionId',
-
+  abiSubscribeSessionId = 'abiSubscribeSessionId'
 }

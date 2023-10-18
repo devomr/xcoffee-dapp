@@ -8,3 +8,4 @@ export const sampleAuthenticatedDomains = [API_URL];
 export const environment = EnvironmentsEnum.testnet;
 export const EXPLORER_URL =
   'https://testnet-explorer.multiversx.com/transactions';
+export const SUBSCRIPTION_PERIOD_IN_DAYS = 30;

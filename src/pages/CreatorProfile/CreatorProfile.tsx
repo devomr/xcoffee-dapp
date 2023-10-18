@@ -131,10 +131,10 @@ export const CreatorProfile = () => {
               )}
 
               {activeTab === 'posts' && <div>
-                <MemberPosts posts={[]} />
+                <MemberPosts posts={[]} creator={currentCreator} />
               </div>}
               {activeTab === 'membership' && <div>
-                <MembershipPlans />
+                <MembershipPlans creator={currentCreator} />
               </div>}
             </div>
           </div>
