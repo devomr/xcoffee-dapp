@@ -45,12 +45,12 @@ export const findCreatorByAddress = async (address: string) => {
 };
 
 /**
- * Find the first 10 creators that have the most supporters
+ * Find the list of last 10 creators registered on the application
  * @returns List of creator objects
  */
-export const findTopSupportedCreators = async () => {
+export const findLastCreators = async () => {
   try {
-    const response = await axios.get(`${API_URL}/creators/top-supported`);
+    const response = await axios.get(`${API_URL}/creators/last-creators`);
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);

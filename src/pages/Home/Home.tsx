@@ -2,7 +2,7 @@ import { AuthRedirectWrapper } from 'wrappers';
 import { Button } from 'components';
 import { useNavigate } from 'react-router-dom';
 import { CreatorCard } from './CreatorCard';
-import { findCreatorByAddress, findTopSupportedCreators } from 'services/creators.service';
+import { findCreatorByAddress, findLastCreators } from 'services/creators.service';
 import { useEffect, useState } from 'react';
 import { RouteNamesEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
@@ -11,28 +11,28 @@ import { buildRouteWithCallback } from 'utils';
 export const Home = () => {
   const navigate = useNavigate();
 
-  // State for showing Top 10 creators orderd by supporters
-  const [topSupportedCreators, setTopSupportedCreators] = useState<Creator[]>([]);
+  // State for showing the last creators registered
+  const [lastCreators, setLastCreators] = useState<Creator[]>([]);
 
   // State for search input
   const [search, setSearch] = useState('');
 
-  const fetchTopSupportedCreators = async () => {
+  const fetchLastCreators = async () => {
     try {
-      const response = await findTopSupportedCreators();
+      const response = await findLastCreators();
 
       if (!response) {
         return;
       }
 
-      setTopSupportedCreators(response.data);
+      setLastCreators(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchTopSupportedCreators();
+    fetchLastCreators();
   }, []);
 
 
@@ -93,13 +93,13 @@ export const Home = () => {
       <div className='flex flex-1 items-center justify-center py-8 px-8 bg-white sm:px-20 '>
         <div className='flex flex-1 flex-col items-center'>
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Who is using our app?</h2>
-          <p className='text-md text-gray-500 mb-5'>See bellow what creators are using our app and support your favorites</p>
+          <p className='text-md text-gray-500 mb-5'>See below which creators joined us recently</p>
           <div>
-            {topSupportedCreators.length === 0 ? (
+            {lastCreators.length === 0 ? (
               <p>No results found.</p>
             ) : (
               <div className='grid grid-cols-3 gap-10'>
-                {topSupportedCreators.map((creator) => (
+                {lastCreators.map((creator) => (
                   <CreatorCard key={creator.address} creator={creator} />
                 ))}
               </div>
