@@ -10,7 +10,7 @@ interface MemberPostProps {
 
 export const MemberPost: React.FC<MemberPostProps> = ({ image, title, description, isVisible }) => {
   return (
-    <div className='relative overflow-hidden bg-white rounded-lg shadow-lg w-full'>
+    <div className='relative overflow-hidden bg-white rounded-lg shadow-md w-full'>
       <img src={preview} alt={title} className='w-full h-48 object-cover' />
       {isVisible ? (
         <div className='p-4'>

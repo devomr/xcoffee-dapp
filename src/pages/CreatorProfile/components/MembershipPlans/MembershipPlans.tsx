@@ -1,4 +1,3 @@
-import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks/account/useGetAccountInfo';
 import { SubscriptionCard } from 'components/SubscriptionCard';
 import { useUserSubscriptionForCreator } from 'hooks/useUserSubscriptionForCreator';
 import { Creator } from 'types/creator.types';
@@ -8,8 +7,7 @@ interface MembershipPlansProps {
 }
 
 export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator }) => {
-  const { address } = useGetAccountInfo();
-  const { subscription, loading, error } = useUserSubscriptionForCreator(creator.address);
+  const { subscription } = useUserSubscriptionForCreator(creator.address);
 
 
   const addSecondsToCurrentDate = (seconds: number) => {

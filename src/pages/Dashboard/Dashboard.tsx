@@ -47,8 +47,11 @@ export const Dashboard = () => {
             <StatsWidget title={'EGLD'} count={1.5} icon={faMoneyCheck}></StatsWidget>
           </div>
 
-          <div className='p-8 shadow-lg rounded-lg'>
-            <h2 className='text-lg font-bold mb-5'>How your fans supported you over time</h2>
+          <div className='text-lg font-extrabold leading-snug mb-5'>
+            How your fans supported you over time
+          </div>
+          <div className='p-8 shadow-md rounded-lg'>
+            <h2 className='text-md font-bold mb-5'>Donations history</h2>
             <div>
               <BarChart data={data} />
             </div>

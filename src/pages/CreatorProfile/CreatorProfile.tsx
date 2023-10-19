@@ -1,5 +1,4 @@
 import { DonationForm } from 'pages/CreatorProfile/components/DonationForm';
-import { DonationItem } from 'pages/CreatorProfile/components/DonationItem/DonationItem';
 import { SetStateAction, useEffect, useState } from 'react';
 import { Tab } from 'components/Tab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -86,7 +85,7 @@ export const CreatorProfile = () => {
                 <h1 className='text-2xl font-extrabold leading-snug'>
                   {currentCreator.firstName} {currentCreator.lastName}
                 </h1>
-                <Link to={EXPLORER_URL + '/accounts/' + creatorAddress} target='_blank'>
+                <Link to={`${EXPLORER_URL}/accounts/${creatorAddress}`} target='_blank'>
                   <FontAwesomeIcon className='text-gray-500 cursor-pointer' icon={faArrowUpRightFromSquare} size='sm' />
                 </Link>
               </div>

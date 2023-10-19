@@ -5,7 +5,7 @@ import { RouteNamesEnum } from 'localConstants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createProfile } from 'services/creators.service';
-import { Creator } from 'types/creator.types';
+import { AddCreator } from 'types/creator.types';
 import { AuthRedirectWrapper } from 'wrappers';
 
 export const SetupProfile = () => {
@@ -35,7 +35,7 @@ export const SetupProfile = () => {
   const handleSaveProfile = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const newCreator: Creator = {
+    const newCreator: AddCreator = {
       firstName: state.firstName,
       lastName: state.lastName,
       description: state.description,

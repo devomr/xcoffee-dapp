@@ -36,14 +36,15 @@ export const Header = () => {
 
       <nav className='h-full w-full text-sm sm:relative sm:left-auto sm:top-auto sm:flex sm:w-auto sm:flex-row sm:justify-end sm:bg-transparent'>
         <div className='flex justify-end container mx-auto items-center gap-2'>
-          <Link to={RouteNamesEnum.creators} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
-            Creators
-          </Link>
+
           {isLoggedIn ? (
             <div className='flex items-center gap-3 text-gray-600'>
               {creator && creator.active ? (
                 <>
-                  <Link to={'creator/' + address} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
+                  <Link to={RouteNamesEnum.dashboard} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
+                    Dashboard
+                  </Link>
+                  <Link to={`${RouteNamesEnum.creator}/${address}`} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
                     Profile
                   </Link>
                   <Link to={RouteNamesEnum.settings} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
@@ -61,10 +62,15 @@ export const Header = () => {
               </Button>
             </div>
           ) : (
-            <MxLink to={buildRouteWithCallback(RouteNamesEnum.unlock, location.pathname)}
-              className='border border-blue-700 text-blue-700 font-semibold py-2 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700'>
-              Connect Wallet
-            </MxLink>
+            <div>
+              <Link to={RouteNamesEnum.creators} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
+                Creators
+              </Link>
+              <MxLink to={buildRouteWithCallback(RouteNamesEnum.unlock, location.pathname)}
+                className='border border-blue-700 text-blue-700 font-semibold py-2 px-4 rounded focus:outline-none hover:bg-blue-100 hover:text-blue-700'>
+                Connect Wallet
+              </MxLink>
+            </div>
           )}
         </div>
       </nav>

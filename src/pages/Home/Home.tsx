@@ -71,7 +71,7 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className='flex flex-1 items-center justify-center py-8 px-8 bg-blue-50 sm:px-20 '>
+      <div className='flex flex-1 items-center justify-center py-16 px-8 bg-blue-50 sm:px-20 '>
         <div className='flex flex-1 flex-col items-center'>
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Looking for a creator?</h2>
           <p className='text-md text-gray-500 mb-5'>You can search your favorite creator using his wallet address</p>
@@ -89,21 +89,19 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className='flex flex-1 items-center justify-center py-8 px-8 bg-white sm:px-20 '>
+      <div className='flex flex-1 items-center justify-center py-16 px-8 bg-white sm:px-20 '>
         <div className='flex flex-1 flex-col items-center'>
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Who is using our app?</h2>
           <p className='text-md text-gray-500 mb-5'>See below which creators joined us recently</p>
-          <div>
-            {lastCreators.length === 0 ? (
-              <p>No results found.</p>
-            ) : (
-              <div className='grid grid-cols-3 gap-10'>
-                {lastCreators.map((creator) => (
-                  <CreatorCard key={creator.address} creator={creator} />
-                ))}
-              </div>
-            )}
-          </div>
+          {lastCreators.length === 0 ? (
+            <p>No results found.</p>
+          ) : (
+            <div className='grid grid-cols-1 gap-5 w-full md:grid-cols-2 xl:grid-cols-3'>
+              {lastCreators.map((creator) => (
+                <CreatorCard key={creator.address} creator={creator} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

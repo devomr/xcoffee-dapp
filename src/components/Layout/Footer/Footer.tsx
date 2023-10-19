@@ -2,8 +2,8 @@ import HeartIcon from 'assets/img/heart.svg?react';
 
 export const Footer = () => {
   return (
-    <footer className='mx-auto w-full max-w-prose p-6 text-center text-gray-400'>
-      <div className='flex flex-col items-center text sm text-gray-400'>
+    <footer className='mx-auto w-full py-5 px-6 text-center text-gray-400 sm:px-20'>
+      <div className='flex justify-between text sm text-gray-400'>
         <a
           className='text-gray-400 text-sm hover:cursor-pointer hover:underline'
           href='/disclaimer'

@@ -9,8 +9,7 @@ interface MemberPostsProps {
 }
 
 export const MemberPosts: React.FC<MemberPostsProps> = ({ posts, creator }) => {
-  const { address } = useGetAccountInfo();
-  const { subscription, loading, error } = useUserSubscriptionForCreator(creator.address);
+  const { subscription } = useUserSubscriptionForCreator(creator.address);
 
 
   return (

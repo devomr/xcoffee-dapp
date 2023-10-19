@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, MxLink } from 'components';
+import { Button } from 'components';
 import { useGetIsLoggedIn, useGetPendingTransactions, useSendDonateTransaction } from 'hooks';
 import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
@@ -79,8 +79,6 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
             </Link>
           )}
         </div>
-
-
       </form>
     </div >
   );

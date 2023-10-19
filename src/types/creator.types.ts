@@ -7,4 +7,5 @@ export type Creator = {
   createdAt: string;
 };
 
-export type UpdateCreator = Omit<Creator, 'address'>;
+export type AddCreator = Omit<Creator, 'createdAt'>;
+export type UpdateCreator = Omit<Creator, 'active' | 'createdAt'>;

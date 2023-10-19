@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { API_URL } from 'config';
-import { Creator } from 'types/creator.types';
+import { AddCreator, Creator, UpdateCreator } from 'types/creator.types';
 
 /**
  * Create profile of a creator account
  * @param creator Creator object
  * @returns New created object
  */
-export const createProfile = async (creator: Creator) => {
+export const createProfile = async (addCreator: AddCreator) => {
   try {
-    const response = await axios.post('creators', creator, {
+    const response = await axios.post('creators', addCreator, {
       baseURL: API_URL
     });
     return response.data;
@@ -23,9 +23,9 @@ export const createProfile = async (creator: Creator) => {
  * @param creator Creator object
  * @returns New updated object
  */
-export const updateProfile = async (creator: Creator) => {
+export const updateProfile = async (updateCreator: UpdateCreator) => {
   try {
-    const response = await axios.put('/creators', creator, {
+    const response = await axios.put('/creators', updateCreator, {
       baseURL: API_URL
     });
     return response.data;

@@ -11,7 +11,7 @@ export const StatsWidget = (props: StatsWidgetType) => {
   const { title, count, icon } = props;
 
   return (
-    <div className="bg-blue-500 rounded-lg shadow-lg p-4 w-64">
+    <div className="bg-blue-500 rounded-lg shadow-md p-4 w-64">
       <div className="flex justify-between items-center">
         <div className="text-white text-5xl font-semibold">
           {count}

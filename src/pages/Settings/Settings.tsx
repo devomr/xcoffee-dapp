@@ -11,9 +11,6 @@ export const Settings = () => {
   const navigate = useNavigate();
   const { address } = useGetAccountInfo();
 
-  // state for current logged in creator
-  const [currentCreator, setCurrentCreator] = useState<Creator | null>(null);
-
   // state for the update form
   const [updateFormState, setUpdateFormState] = useState({
     firstName: '',
@@ -49,7 +46,6 @@ export const Settings = () => {
 
     // set the creator
     const creator: Creator = response.data;
-    setCurrentCreator(creator);
     setUpdateFormState({
       ...updateFormState,
       firstName: creator.firstName,
@@ -65,7 +61,7 @@ export const Settings = () => {
   const handleUpdateProfile = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const updatedCreator: Creator = {
+    const updatedCreator: UpdateCreator = {
       firstName: updateFormState.firstName,
       lastName: updateFormState.lastName,
       description: updateFormState.description,
@@ -94,7 +90,7 @@ export const Settings = () => {
             Settings
           </h1>
 
-          <div className='flex flex-col p-6 rounded-lg shadow-lg'>
+          <div className='flex flex-col p-6 rounded-lg shadow-md'>
             <h2 className='text-md font-extrabold leading-snug mb-3'>
               Update profile details
             </h2>
