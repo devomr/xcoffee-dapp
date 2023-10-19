@@ -36,7 +36,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator, subsc
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center'>
             {subscriptionPlans && subscriptionPlans.length > 0 ? (
               subscriptionPlans.map((item) => (
-                <SubscriptionCard title={item.title} benefits={item.benefits} price={item.price} address={creator.address} />
+                <SubscriptionCard key={item.title} title={item.title} benefits={item.benefits} price={item.price} creatorAddress={creator.address} />
               ))
             ) : (
               'No available posts for the moment.'

@@ -3,7 +3,7 @@ import { EnvironmentsEnum } from 'types';
 export * from './sharedConfig';
 
 export const contractAddress =
-  'erd1qqqqqqqqqqqqqpgqvhk2wnx5tgzvlalzdt7yus5ygue084hx7j4qka2gz6';
+  'erd1qqqqqqqqqqqqqpgqrsse0535l7f0rtp7e8t560tws2g3y0aq7j4qa2cl30';
 export const API_URL = 'https://localhost:3001';
 export const sampleAuthenticatedDomains = [API_URL];
 export const environment = EnvironmentsEnum.devnet;

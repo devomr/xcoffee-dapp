@@ -15,16 +15,21 @@ import { MembershipPosts } from './components/MembershipPosts';
 import { useUserSubscriptionForCreator } from 'hooks/useUserSubscriptionForCreator';
 import { Post } from 'types/post.types';
 import { getPostsForMembers } from 'services/post.service';
+import { Subscription } from 'types/subscription.types';
+import { getUserSubscription } from 'services/subscriptions.service';
 
 
 export const CreatorProfile = () => {
   const { creatorAddress } = useParams();
+
+  const { data } = useUserSubscriptionForCreator(creatorAddress);
+
   const [currentCreator, setCurrentCreator] = useState<Creator | null>(null);
   const [donationsTransactions, setDonationsTransactions] = useState<DonationTransaction[]>([]);
   const [supportersCount, setSupportersCount] = useState<number>(0);
   const [memberPosts, setMemberPosts] = useState<Post[]>([]);
+  const [userSubscription, setUserSubscription] = useState<Subscription | null>(data);
   const [activeTab, setActiveTab] = useState('supporters');
-  const { data } = useUserSubscriptionForCreator(creatorAddress);
 
   const changeTab = (tab: SetStateAction<string>) => {
     setActiveTab(tab);
@@ -56,6 +61,11 @@ export const CreatorProfile = () => {
     setDonationsTransactions(response?.data)
   };
 
+  const fetchUserSubscription = async (creatorAddress: string) => {
+    const subscription = await getUserSubscription(creatorAddress);
+    setUserSubscription(subscription);
+  };
+
   useEffect(() => {
     if (!creatorAddress) {
       alert('Creator address not valid');
@@ -75,6 +85,7 @@ export const CreatorProfile = () => {
     const polling = setInterval(() => {
       fetchCountOfSupporters(creatorAddress);
       fetchDonationsHistory(creatorAddress);
+      fetchUserSubscription(creatorAddress);
     }, pollingInterval);
 
     // Clear the interval when the component unmounts to prevent memory leaks
@@ -153,11 +164,11 @@ export const CreatorProfile = () => {
               )}
 
               {activeTab === 'posts' && <div>
-                <MembershipPosts posts={memberPosts} creator={currentCreator} subscription={data} />
+                <MembershipPosts posts={memberPosts} creator={currentCreator} subscription={userSubscription} />
               </div>}
 
               {activeTab === 'membership' && <div>
-                <MembershipPlans creator={currentCreator} subscription={data} />
+                <MembershipPlans creator={currentCreator} subscription={userSubscription} />
               </div>}
             </div>
           </div>

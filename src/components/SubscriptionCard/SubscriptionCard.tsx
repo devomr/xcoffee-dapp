@@ -7,19 +7,20 @@ import { useGetPendingTransactions } from '@multiversx/sdk-dapp/hooks/transactio
 import { useSendSubscribeTransaction } from 'hooks/transactions/useSendSubscribeTransaction';
 import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Button } from 'components/Button';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { buildRouteWithCallback } from 'utils';
+import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks/account/useGetAccountInfo';
 
 
 interface SubscriptionCardProps {
   title: string;
   benefits: string[];
   price: number;
-  address: string;
+  creatorAddress: string;
 }
 
-export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benefits, price, address }) => {
-  const { creatorAddress } = useParams();
+export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benefits, price, creatorAddress }) => {
+  const { address } = useGetAccountInfo();
   const isLoggedIn = useGetIsLoggedIn();
   const { hasPendingTransactions } = useGetPendingTransactions();
   const {
@@ -30,7 +31,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benef
   const onSendSubscribeTransaction = async () => {
     const convertedAmount = (Math.pow(10, 18) * price).toString(10);
     const subscriptionPeriodSeconds = 24 * 60 * 60 * SUBSCRIPTION_PERIOD_IN_DAYS;
-    await sendSubscribeTransactionFromAbi(address, convertedAmount, subscriptionPeriodSeconds);
+    await sendSubscribeTransactionFromAbi(creatorAddress, convertedAmount, subscriptionPeriodSeconds);
   };
 
   return (
