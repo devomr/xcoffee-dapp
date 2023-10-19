@@ -49,8 +49,8 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator }) => 
           </div>
         ) : (
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center'>
-            <SubscriptionCard title='Pro' benefits={proBenefits} price={0.1} creatorAddress={creator.address} />
-            <SubscriptionCard title='Premium' benefits={premiumBenefits} price={0.2} creatorAddress={creator.address} />
+            <SubscriptionCard title='Pro' benefits={proBenefits} price={0.1} address={creator.address} />
+            <SubscriptionCard title='Premium' benefits={premiumBenefits} price={0.2} address={creator.address} />
           </div>
         )
       }

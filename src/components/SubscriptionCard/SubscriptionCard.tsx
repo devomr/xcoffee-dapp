@@ -7,7 +7,7 @@ import { useGetPendingTransactions } from '@multiversx/sdk-dapp/hooks/transactio
 import { useSendSubscribeTransaction } from 'hooks/transactions/useSendSubscribeTransaction';
 import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Button } from 'components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { buildRouteWithCallback } from 'utils';
 
 
@@ -15,10 +15,11 @@ interface SubscriptionCardProps {
   title: string;
   benefits: string[];
   price: number;
-  creatorAddress: string;
+  address: string;
 }
 
-export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benefits, price, creatorAddress }) => {
+export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benefits, price, address }) => {
+  const { creatorAddress } = useParams();
   const isLoggedIn = useGetIsLoggedIn();
   const { hasPendingTransactions } = useGetPendingTransactions();
   const {
@@ -29,7 +30,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benef
   const onSendSubscribeTransaction = async () => {
     const convertedAmount = (Math.pow(10, 18) * price).toString(10);
     const subscriptionPeriodSeconds = 24 * 60 * 60 * SUBSCRIPTION_PERIOD_IN_DAYS;
-    await sendSubscribeTransactionFromAbi(creatorAddress, convertedAmount, subscriptionPeriodSeconds);
+    await sendSubscribeTransactionFromAbi(address, convertedAmount, subscriptionPeriodSeconds);
   };
 
   return (
@@ -50,7 +51,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = ({ title, benef
         {isLoggedIn ? (
           <Button
             className='bg-blue-500 text-white font-semibold py-3 px-4 rounded w-full focus:outline-none hover:bg-blue-100 hover:text-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-70'
-            disabled={hasPendingTransactions}
+            disabled={hasPendingTransactions || (creatorAddress === address)}
             onClick={onSendSubscribeTransaction}>
             Subscribe for {price} EGLD
           </Button>

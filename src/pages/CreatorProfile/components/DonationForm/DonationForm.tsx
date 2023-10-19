@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button } from 'components';
-import { useGetIsLoggedIn, useGetPendingTransactions, useSendDonateTransaction } from 'hooks';
+import { useGetAccountInfo, useGetIsLoggedIn, useGetPendingTransactions, useSendDonateTransaction } from 'hooks';
 import { RouteNamesEnum, SessionEnum } from 'localConstants';
 import { Creator } from 'types/creator.types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { buildRouteWithCallback } from 'utils';
 
 interface DonnationFromProps {
@@ -13,6 +13,8 @@ interface DonnationFromProps {
 export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
   const location = useLocation();
   const isLoggedIn = useGetIsLoggedIn();
+  const { creatorAddress } = useParams();
+  const { address } = useGetAccountInfo();
   const { hasPendingTransactions } = useGetPendingTransactions();
   const {
     sendDonateTransactionFromAbi
@@ -67,7 +69,7 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
           {isLoggedIn ? (
             <Button
               className='bg-blue-500 text-white font-semibold py-3 px-4 rounded w-full focus:outline-none hover:bg-blue-100 hover:text-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-70'
-              disabled={hasPendingTransactions}
+              disabled={hasPendingTransactions || (creatorAddress === address)}
               onClick={onSendDonateTransaction}>
               Support now ({donationState.amount} EGLD)
             </Button>
