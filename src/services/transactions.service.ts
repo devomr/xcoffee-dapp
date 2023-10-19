@@ -3,11 +3,12 @@ import { API_URL } from 'config';
 
 export const findDonationsHistory = async (address: string) => {
   try {
-    const response = await axios.get(`/stats/donations/${address}`);
+    const response = await axios.get(`/stats/donations/${address}`, {
+      baseURL: API_URL
+    });
     return response;
-  } catch (error) {
-    // Handle errors here
-    console.error(error);
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -17,8 +18,7 @@ export const getCountOfSupporters = async (address: string) => {
       baseURL: API_URL
     });
     return response;
-  } catch (error) {
-    // Handle errors here
-    console.error(error);
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
   }
 };

@@ -4,6 +4,7 @@ import { SetupProfile } from 'pages/SetupProfile';
 import { CreatorProfile } from 'pages/CreatorProfile';
 import { Settings } from 'pages/Settings';
 import { RouteType } from 'types';
+import { Creators } from 'pages/Creators';
 
 interface RouteWithTitleType extends RouteType {
   title: string;
@@ -39,5 +40,10 @@ export const routes: RouteWithTitleType[] = [
     path: RouteNamesEnum.settings,
     title: 'Settings',
     component: Settings
+  },
+  {
+    path: RouteNamesEnum.creators,
+    title: 'Creators',
+    component: Creators
   }
 ];

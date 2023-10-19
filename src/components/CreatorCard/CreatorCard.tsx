@@ -15,6 +15,11 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({ creator }) => {
     return `${firstNameLetter}${lastNameLetter}`;
   };
 
+  const getCreatorRegisterDate = () => {
+    return creator.createdAt.split('T')[0];
+  }
+
+
   const handleViewButtonClick = (address: string) => {
     navigate(`/creator/${address}`)
   };
@@ -33,6 +38,9 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({ creator }) => {
       </div>
       <div className='mb-3'>
         {creator.description}
+      </div>
+      <div className='text-sm text-gray-500 mb-3'>
+        Registered at: {getCreatorRegisterDate()}
       </div>
       <div>
         <Button

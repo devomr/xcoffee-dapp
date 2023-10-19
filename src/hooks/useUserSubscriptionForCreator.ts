@@ -4,27 +4,24 @@ import { getUserSubscription } from 'services/subscriptions.service';
 
 /**
  * Hook used to retrieve the creator details by his wallet address.
- * @param address Wallet address
+ * @param creatorAddress Wallet address
  * @returns An object that contains the creator, error and loading flag
  */
-export function useUserSubscriptionForCreator(
-  userAddress: string,
-  creatorAddress: string
-) {
+export function useUserSubscriptionForCreator(creatorAddress: string) {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (!userAddress || !creatorAddress) {
+    if (!creatorAddress) {
       return;
     }
 
-    getUserSubscription(userAddress, creatorAddress)
+    getUserSubscription(creatorAddress)
       .then((data) => setSubscription(data))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [userAddress, creatorAddress]);
+  }, [creatorAddress]);
 
   return { subscription, loading, error };
 }

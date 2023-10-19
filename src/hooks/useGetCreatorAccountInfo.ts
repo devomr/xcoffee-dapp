@@ -20,9 +20,9 @@ export function useGetCreatorAccountInfo(address: string) {
 
     const findCreatorByAddress = async (address: string) => {
       try {
-        const response = await axios.get(
-          `${API_URL}/creators/search/${address}`
-        );
+        const response = await axios.get(`/creators/search/${address}`, {
+          baseURL: API_URL
+        });
         setCreator(response.data);
         return response;
       } catch (error: any) {

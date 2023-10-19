@@ -1,7 +1,6 @@
 import { AuthRedirectWrapper } from 'wrappers';
-import { Button } from 'components';
+import { Button, CreatorCard } from 'components';
 import { useNavigate } from 'react-router-dom';
-import { CreatorCard } from './CreatorCard';
 import { findCreatorByAddress, findLastCreators } from 'services/creators.service';
 import { useEffect, useState } from 'react';
 import { RouteNamesEnum } from 'localConstants';

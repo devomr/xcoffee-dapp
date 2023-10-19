@@ -9,7 +9,7 @@ interface MembershipPlansProps {
 
 export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator }) => {
   const { address } = useGetAccountInfo();
-  const { subscription, loading, error } = useUserSubscriptionForCreator(address, creator.address);
+  const { subscription, loading, error } = useUserSubscriptionForCreator(creator.address);
 
 
   const addSecondsToCurrentDate = (seconds: number) => {
