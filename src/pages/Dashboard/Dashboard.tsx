@@ -1,10 +1,17 @@
 import { faMoneyCheck, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import { AmountWidget } from 'components/AmountWidget';
 import BarChart from 'components/BarChart/BarChart';
 import { StatsWidget } from 'components/StatsWidget';
 import { useGetAccountInfo } from 'hooks';
 import { useGetCreatorAccountInfo } from 'hooks/useGetCreatorAccountInfo';
 import { RouteNamesEnum } from 'localConstants';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { findDonationsHistory, getCountOfSupporters } from 'services/transactions.service';
+import { ChartData } from 'types/chart-data.types';
+import { DonationTransaction } from 'types/donationTransaction.types';
+import { getDateFromTimestampString } from 'utils/date.utils';
+import { toEgldAmount } from 'utils/egld.utils';
 import { AuthRedirectWrapper } from 'wrappers';
 
 
@@ -12,13 +19,57 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const { address } = useGetAccountInfo();
   const { creator, loading, error } = useGetCreatorAccountInfo(address);
+  const [supportersCount, setSupportersCount] = useState<number>(0);
+  const [donationAmount, setDonationAmount] = useState<number>(0);
+  const [chartTransactions, setChartTransactions] = useState<ChartData[]>([]);
 
-  const data = [
-    { timestamp: '2023-01-01', count: 10 },
-    { timestamp: '2023-01-02', count: 15 },
-    { timestamp: '2023-01-03', count: 8 },
-    // Add more data points here
-  ];
+  useEffect(() => {
+    if (address) {
+      fetchCountOfSupporters(address);
+      fetchDonationsHistory(address);
+    }
+  }, [address]);
+
+
+  const fetchCountOfSupporters = async (address: string) => {
+    const response = await getCountOfSupporters(address);
+    setSupportersCount(response?.data);
+  };
+
+  const fetchDonationsHistory = async (address: string) => {
+    const response = await findDonationsHistory(address);
+    const donationTransactions: DonationTransaction[] = response?.data || [];
+
+    // calculate total amount of EGLD received
+    const amount = donationTransactions.reduce((total, item) => {
+      if (item.amount !== undefined) {
+        return total + parseFloat(item.amount);
+      }
+      return total;
+    }, 0);
+    setDonationAmount(amount);
+
+    // prepare the data for the bar chart
+    const donationsMap = new Map<string, number>();
+    const chartData: ChartData[] = [];
+    donationTransactions.forEach(transaction => {
+      const mapKey = getDateFromTimestampString(transaction.createdAt);
+      if (donationsMap.has(mapKey)) {
+        const existingValue = donationsMap.get(mapKey) || 0;
+        donationsMap.set(mapKey, existingValue + parseFloat(transaction.amount));
+      } else {
+        donationsMap.set(mapKey, parseFloat(transaction.amount));
+      }
+    });
+
+    for (let [date, amount] of donationsMap) {
+      chartData.push({
+        label: date,
+        value: toEgldAmount(amount)
+      });
+    }
+    setChartTransactions(chartData);
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,8 +94,8 @@ export const Dashboard = () => {
             Welcome, {creator?.firstName} {creator?.lastName}!
           </h1>
           <div className='flex gap-5 mb-10'>
-            <StatsWidget title={'Supporters'} count={5} icon={faPeopleGroup}></StatsWidget>
-            <StatsWidget title={'EGLD'} count={1.5} icon={faMoneyCheck}></StatsWidget>
+            <StatsWidget title={'Supporters'} count={supportersCount} icon={faPeopleGroup}></StatsWidget>
+            <AmountWidget title={'EGLD'} amount={donationAmount.toString()} icon={faMoneyCheck}></AmountWidget>
           </div>
 
           <div className='text-lg font-extrabold leading-snug mb-5'>
@@ -53,7 +104,7 @@ export const Dashboard = () => {
           <div className='p-8 shadow-md rounded-lg'>
             <h2 className='text-md font-bold mb-5'>Donations history</h2>
             <div>
-              <BarChart data={data} />
+              <BarChart data={chartTransactions} />
             </div>
           </div>
         </div>

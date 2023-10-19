@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { ChartData } from 'types/chart-data.types';
 
 ChartJS.register(
   CategoryScale,
@@ -19,22 +20,18 @@ ChartJS.register(
   Legend
 );
 
-interface DataPoint {
-  timestamp: string;
-  count: number;
-}
 
 interface BarChartProps {
-  data: DataPoint[];
+  data: ChartData[];
 }
 
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const chartData = {
-    labels: data.map(item => item.timestamp),
+    labels: data.map(item => item.label),
     datasets: [
       {
         label: 'EGLD',
-        data: data.map(item => item.count),
+        data: data.map(item => item.value),
         backgroundColor: '#3B82F6',
       },
     ],
@@ -49,6 +46,12 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       title: {
         display: false,
         text: 'Donations from your fans',
+      },
+    },
+    scales: {
+      y: {
+        suggestedMin: 0,
+        suggestedMax: 5,
       },
     },
   };

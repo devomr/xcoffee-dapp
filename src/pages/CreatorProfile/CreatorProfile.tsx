@@ -94,7 +94,7 @@ export const CreatorProfile = () => {
             <div className='flex my-3'>
               <div className='flex gap-2 items-center'>
                 <FontAwesomeIcon className='text-gray-500' icon={faHeart} size='sm' />
-                <span>{supportersCount} supporters</span>
+                <span>{supportersCount} supporter(s)</span>
               </div>
             </div>
             <p className='text-gray-500 mb-5'>

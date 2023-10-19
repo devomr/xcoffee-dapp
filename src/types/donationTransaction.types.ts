@@ -6,4 +6,5 @@ export type DonationTransaction = {
   txHash: string;
   receiverAddress: string;
   senderAddress: string;
+  createdAt: string;
 };
