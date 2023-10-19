@@ -15,7 +15,7 @@ export const MembershipPosts: React.FC<MemberPostsProps> = ({ posts, creator, su
       <div className='flex flex-col items-center mb-5'>
         <h2 className='text-lg font-bold mb-3'>My recent supporters</h2>
         <p className='text-sm text-gray-500'>
-          You want to be here? Then by me some coffee ☕
+          You want to see the member posts? Then subscribe for exclusive content.
         </p>
       </div>
 

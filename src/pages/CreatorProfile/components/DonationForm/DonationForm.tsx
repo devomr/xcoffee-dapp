@@ -53,7 +53,7 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
             <div>EGLD</div>
           </div>
           <div>
-            <input className="text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-20 max-w-full" type="number" min={0.1}
+            <input className="text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-10 max-w-full" type="number" min={0.1}
               step={0.1} name="amount" value={donationState.amount} onChange={handleDonationFormChange} />
           </div>
         </div>
