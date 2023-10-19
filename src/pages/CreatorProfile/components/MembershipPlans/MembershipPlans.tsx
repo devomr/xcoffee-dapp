@@ -1,13 +1,15 @@
 import { SubscriptionCard } from 'components/SubscriptionCard';
 import { useUserSubscriptionForCreator } from 'hooks/useUserSubscriptionForCreator';
 import { Creator } from 'types/creator.types';
+import { Subscription } from 'types/subscription.types';
 
 interface MembershipPlansProps {
   creator: Creator;
+  subscription: Subscription | null;
 }
 
-export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator }) => {
-  const { subscription } = useUserSubscriptionForCreator(creator.address);
+export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator, subscription }) => {
+
 
 
   const addSecondsToCurrentDate = (seconds: number) => {

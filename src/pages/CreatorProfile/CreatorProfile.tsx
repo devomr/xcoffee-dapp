@@ -11,7 +11,10 @@ import { DonationTransaction } from 'types/donationTransaction.types';
 import { EXPLORER_URL } from 'config';
 import { MembershipPlans } from './components/MembershipPlans';
 import { RecentSupporters } from './components/RecentSupporters';
-import { MemberPosts } from './components/MemberPosts';
+import { MembershipPosts } from './components/MembershipPosts';
+import { useUserSubscriptionForCreator } from 'hooks/useUserSubscriptionForCreator';
+import { Post } from 'types/post.types';
+import { getPostsForMembers } from 'services/post.service';
 
 
 export const CreatorProfile = () => {
@@ -19,7 +22,9 @@ export const CreatorProfile = () => {
   const [currentCreator, setCurrentCreator] = useState<Creator | null>(null);
   const [donationsTransactions, setDonationsTransactions] = useState<DonationTransaction[]>([]);
   const [supportersCount, setSupportersCount] = useState<number>(0);
+  const [memberPosts, setMemberPosts] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState('supporters');
+  const { subscription } = useUserSubscriptionForCreator(creatorAddress);
 
   const changeTab = (tab: SetStateAction<string>) => {
     setActiveTab(tab);
@@ -54,11 +59,31 @@ export const CreatorProfile = () => {
   };
 
   useEffect(() => {
-    if (creatorAddress) {
-      fetchCreatorByAddress(creatorAddress);
+    if (!creatorAddress) {
+      alert('Creator address not valid');
+      return;
+    }
+
+    fetchCreatorByAddress(creatorAddress);
+    fetchCountOfSupporters(creatorAddress);
+    fetchDonationsHistory(creatorAddress);
+
+    setMemberPosts(getPostsForMembers());
+
+    // Polling interval in milliseconds (e.g., every 5 seconds)
+    const pollingInterval = 5000;
+
+    // Set up an interval to periodically fetch data
+    const polling = setInterval(() => {
       fetchCountOfSupporters(creatorAddress);
       fetchDonationsHistory(creatorAddress);
-    }
+    }, pollingInterval);
+
+    // Clear the interval when the component unmounts to prevent memory leaks
+    return () => {
+      clearInterval(polling);
+    };
+
   }, []);
 
 
@@ -130,10 +155,11 @@ export const CreatorProfile = () => {
               )}
 
               {activeTab === 'posts' && <div>
-                <MemberPosts posts={[]} creator={currentCreator} />
+                <MembershipPosts posts={memberPosts} creator={currentCreator} subscription={subscription} />
               </div>}
+
               {activeTab === 'membership' && <div>
-                <MembershipPlans creator={currentCreator} />
+                <MembershipPlans creator={currentCreator} subscription={subscription} />
               </div>}
             </div>
           </div>

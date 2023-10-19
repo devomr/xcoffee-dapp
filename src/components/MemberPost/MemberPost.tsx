@@ -1,5 +1,4 @@
 import React from 'react';
-import preview from '../../../public/preview.jpg'
 
 interface MemberPostProps {
   image: string;
@@ -11,7 +10,7 @@ interface MemberPostProps {
 export const MemberPost: React.FC<MemberPostProps> = ({ image, title, description, isVisible }) => {
   return (
     <div className='relative overflow-hidden bg-white rounded-lg shadow-md w-full'>
-      <img src={preview} alt={title} className='w-full h-48 object-cover' />
+      <img src={image} alt={title} className='w-full h-48 object-cover' />
       {isVisible ? (
         <div className='p-4'>
           <h2 className='text-lg font-semibold'>
