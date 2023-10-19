@@ -37,15 +37,14 @@ export const Settings = () => {
    * @returns 
    */
   const fetchCreatorByAddress = async (address: string) => {
-    const response = await findCreatorByAddress(address);
+    const creator: Creator = await findCreatorByAddress(address);
 
-    if (!response) {
+    if (!creator) {
       navigate(RouteNamesEnum.home);
       return;
     }
 
     // set the creator
-    const creator: Creator = response.data;
     setUpdateFormState({
       ...updateFormState,
       firstName: creator.firstName,

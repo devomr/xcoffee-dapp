@@ -24,7 +24,7 @@ export const CreatorProfile = () => {
   const [supportersCount, setSupportersCount] = useState<number>(0);
   const [memberPosts, setMemberPosts] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState('supporters');
-  const { subscription } = useUserSubscriptionForCreator(creatorAddress);
+  const { data } = useUserSubscriptionForCreator(creatorAddress);
 
   const changeTab = (tab: SetStateAction<string>) => {
     setActiveTab(tab);
@@ -37,14 +37,12 @@ export const CreatorProfile = () => {
   };
 
   const fetchCreatorByAddress = async (address: string) => {
-    const response = await findCreatorByAddress(address);
+    const creator: Creator = await findCreatorByAddress(address);
 
-    if (!response) {
+    if (!creator) {
       alert('Creator not found');
       return;
     }
-
-    const creator: Creator = response.data;
     setCurrentCreator(creator);
   };
 
@@ -155,11 +153,11 @@ export const CreatorProfile = () => {
               )}
 
               {activeTab === 'posts' && <div>
-                <MembershipPosts posts={memberPosts} creator={currentCreator} subscription={subscription} />
+                <MembershipPosts posts={memberPosts} creator={currentCreator} subscription={data} />
               </div>}
 
               {activeTab === 'membership' && <div>
-                <MembershipPlans creator={currentCreator} subscription={subscription} />
+                <MembershipPlans creator={currentCreator} subscription={data} />
               </div>}
             </div>
           </div>

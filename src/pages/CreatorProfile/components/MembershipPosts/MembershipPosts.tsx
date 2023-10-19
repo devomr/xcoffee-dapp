@@ -1,5 +1,4 @@
 import { MemberPost } from 'components/MemberPost';
-import { title } from 'process';
 import { Creator } from 'types/creator.types';
 import { Post } from 'types/post.types';
 import { Subscription } from 'types/subscription.types';

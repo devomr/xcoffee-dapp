@@ -44,7 +44,7 @@ export const findCreatorByAddress = async (address: string) => {
     const response = await axios.get(`/creators/search/${address}`, {
       baseURL: API_URL
     });
-    return response;
+    return response.data;
   } catch (error: any) {
     throw new Error(error.response.data.message);
   }

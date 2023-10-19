@@ -18,7 +18,7 @@ import { AuthRedirectWrapper } from 'wrappers';
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { address } = useGetAccountInfo();
-  const { creator, loading, error } = useGetCreatorAccountInfo(address);
+  const { data, loading, error } = useGetCreatorAccountInfo(address);
   const [supportersCount, setSupportersCount] = useState<number>(0);
   const [donationAmount, setDonationAmount] = useState<number>(0);
   const [chartTransactions, setChartTransactions] = useState<ChartData[]>([]);
@@ -75,7 +75,7 @@ export const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  if (!creator || !creator.active) {
+  if (!data || !data.active) {
     // If the creator is not active, he did not setup his profile
     // Redirect to the setup profile page
     navigate(RouteNamesEnum.setupProfile);
@@ -91,7 +91,7 @@ export const Dashboard = () => {
       <div className='px-8 mt-5 min-h-screen sm:px-20'>
         <div className='flex flex-1 flex-col rounded bg-white p-6 '>
           <h1 className='text-xl font-extrabold leading-snug mb-5'>
-            Welcome, {creator?.firstName} {creator?.lastName}!
+            Welcome, {data?.firstName} {data?.lastName}!
           </h1>
           <div className='flex gap-5 mb-10'>
             <StatsWidget title={'Supporters'} count={supportersCount} icon={faPeopleGroup}></StatsWidget>

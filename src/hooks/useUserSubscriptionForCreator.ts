@@ -10,15 +10,15 @@ import { HttpResponse } from 'types/http-response.types';
  */
 export function useUserSubscriptionForCreator(
   creatorAddress?: string
-): HttpResponse<Subscription> {
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+): HttpResponse<Subscription | null> {
+  const [data, setData] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!creatorAddress) {
       // Reset the state when creatorAddress is null
-      setSubscription(null);
+      setData(null);
       setError(null);
       setLoading(false);
       return;
@@ -26,15 +26,15 @@ export function useUserSubscriptionForCreator(
 
     getUserSubscription(creatorAddress)
       .then((data: Subscription) => {
-        setSubscription(data);
+        setData(data);
         setError(null);
       })
       .catch((error: Error) => {
-        setSubscription(null);
+        setData(null);
         setError(error);
       })
       .finally(() => setLoading(false));
   }, [creatorAddress]);
 
-  return { subscription, loading, error };
+  return { data, loading, error };
 }

@@ -1,6 +1,9 @@
+import { SubscriptionAlert } from 'components/SubscriptionAlert';
 import { SubscriptionCard } from 'components/SubscriptionCard';
-import { useUserSubscriptionForCreator } from 'hooks/useUserSubscriptionForCreator';
+import { useEffect, useState } from 'react';
+import { getCreatorSubscriptionPlans } from 'services/subscriptions.service';
 import { Creator } from 'types/creator.types';
+import { SubscriptionPlan } from 'types/subscription-plan.types';
 import { Subscription } from 'types/subscription.types';
 
 interface MembershipPlansProps {
@@ -10,27 +13,11 @@ interface MembershipPlansProps {
 
 export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator, subscription }) => {
 
+  const [subscriptionPlans, setSubscriptionPlans] = useState<SubscriptionPlan[]>([]);
 
-
-  const addSecondsToCurrentDate = (seconds: number) => {
-    const currentDate = new Date();
-    const newDate = new Date(currentDate.getTime() + seconds * 1000);
-
-    return newDate;
-  }
-
-  const proBenefits = [
-    'Access to private community',
-    'Access to private posts for members',
-  ];
-
-  const premiumBenefits = [
-    'Access to private community',
-    'Access to private posts for members',
-    'Monthly consulting calls'
-  ]
-
-
+  useEffect(() => {
+    setSubscriptionPlans(getCreatorSubscriptionPlans());
+  }, []);
 
   return (
     <div className='flex flex-col items-center'>
@@ -42,21 +29,21 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator, subsc
       </div>
       {
         subscription && subscription.status === 'active_subscription' ? (
-          <div className='bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md mb-5 w-full' role='alert'>
-            <div className='flex items-center gap-3'>
-              <span className='text-sm'>
-                You have a subscription valid until {addSecondsToCurrentDate(subscription.remainingTime).toISOString()}
-              </span>
-            </div>
-          </div>
+          // Show user the subscription alert if he has an active subscription
+          <SubscriptionAlert subscription={subscription} />
         ) : (
+          // Show user the available subscription plans
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center'>
-            <SubscriptionCard title='Pro' benefits={proBenefits} price={0.1} address={creator.address} />
-            <SubscriptionCard title='Premium' benefits={premiumBenefits} price={0.2} address={creator.address} />
+            {subscriptionPlans && subscriptionPlans.length > 0 ? (
+              subscriptionPlans.map((item) => (
+                <SubscriptionCard title={item.title} benefits={item.benefits} price={item.price} address={creator.address} />
+              ))
+            ) : (
+              'No available posts for the moment.'
+            )}
           </div>
         )
       }
-
     </div>
   );
 };

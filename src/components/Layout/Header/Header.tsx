@@ -14,7 +14,7 @@ export const Header = () => {
   const location = useLocation();
   const isLoggedIn = useGetIsLoggedIn();
   const { address } = useGetAccountInfo();
-  const { creator, loading, error } = useGetCreatorAccountInfo(address);
+  const { data, loading, error } = useGetCreatorAccountInfo(address);
 
 
   const handleLogout = () => {
@@ -41,7 +41,7 @@ export const Header = () => {
           </Link>
           {isLoggedIn ? (
             <div className='flex items-center gap-3 text-gray-600'>
-              {creator && creator.active ? (
+              {data && data.active ? (
                 <>
                   <Link to={RouteNamesEnum.dashboard} className='rounded-lg px-3 py-2 text-center hover:no-underline my-0 hover-bg-slate-100 mx-0'>
                     Dashboard

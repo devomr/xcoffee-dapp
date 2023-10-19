@@ -11,7 +11,7 @@ import { AuthRedirectWrapper } from 'wrappers';
 export const SetupProfile = () => {
   const navigate = useNavigate();
   const { address } = useGetAccountInfo();
-  const { creator } = useGetCreatorAccountInfo(address);
+  const { data } = useGetCreatorAccountInfo(address);
 
   const [state, setState] = useState({
     firstName: '',
@@ -19,7 +19,7 @@ export const SetupProfile = () => {
     description: ''
   });
 
-  if (creator && creator.active) {
+  if (data && data.active) {
     navigate(RouteNamesEnum.dashboard);
   }
 

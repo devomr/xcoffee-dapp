@@ -37,14 +37,12 @@ export const Home = () => {
 
 
   const handleSearchButtonClick = async () => {
-    const response = await findCreatorByAddress(search);
+    const creator: Creator = await findCreatorByAddress(search);
 
-    if (!response) {
+    if (!creator) {
       alert('Creator not found');
       return;
     }
-
-    const creator: Creator = response.data;
     navigate(`/creator/${creator.address}`);
   };
 

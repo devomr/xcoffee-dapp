@@ -1,5 +1,5 @@
 export type HttpResponse<T> = {
-  subscription: T | null;
+  data: T | null;
   loading: boolean;
   error: Error | null;
 };
