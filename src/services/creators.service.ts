@@ -9,7 +9,9 @@ import { Creator } from 'types/creator.types';
  */
 export const createProfile = async (creator: Creator) => {
   try {
-    const response = await axios.post(`${API_URL}/creators`, creator);
+    const response = await axios.post('creators', creator, {
+      baseURL: API_URL
+    });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response.data.message);
@@ -23,7 +25,9 @@ export const createProfile = async (creator: Creator) => {
  */
 export const updateProfile = async (creator: Creator) => {
   try {
-    const response = await axios.put(`${API_URL}/creators`, creator);
+    const response = await axios.put('/creators', creator, {
+      baseURL: API_URL
+    });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response.data.message);
@@ -37,7 +41,9 @@ export const updateProfile = async (creator: Creator) => {
  */
 export const findCreatorByAddress = async (address: string) => {
   try {
-    const response = await axios.get(`${API_URL}/creators/search/${address}`);
+    const response = await axios.get(`/creators/search/${address}`, {
+      baseURL: API_URL
+    });
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
@@ -50,7 +56,24 @@ export const findCreatorByAddress = async (address: string) => {
  */
 export const findLastCreators = async () => {
   try {
-    const response = await axios.get(`${API_URL}/creators/last-creators`);
+    const response = await axios.get('/creators/last-creators', {
+      baseURL: API_URL
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+/**
+ * Find the list all available creators
+ * @returns List of creator objects
+ */
+export const findAvailableCreators = async () => {
+  try {
+    const response = await axios.get('creators', {
+      baseURL: API_URL
+    });
     return response;
   } catch (error: any) {
     throw new Error(error.response.data.message);
