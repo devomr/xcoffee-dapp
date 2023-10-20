@@ -31,7 +31,7 @@ export const Creators = () => {
       <div className='flex flex-1 flex-col'>
         <div className="flex flex-col items-center mb-5">
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Looking for a creator?</h2>
-          <p className='text-md text-gray-500 mb-5'>You can see below the creators who joined out platform</p>
+          <p className='text-md text-gray-500 mb-5'>You can see below the creators who joined our platform</p>
         </div>
 
         {creators.length === 0 ? (

@@ -51,14 +51,21 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     scales: {
       y: {
         suggestedMin: 0,
-        suggestedMax: 5,
+        suggestedMax: 2,
       },
     },
   };
 
   return (
     <div>
-      <Bar data={chartData} options={chartOptions} />
+      {
+        data && data.length > 0 ? (
+          <Bar data={chartData} options={chartOptions} />
+        ) : (
+          'You do not have any donations yet.'
+        )
+      }
+
     </div>
   );
 };

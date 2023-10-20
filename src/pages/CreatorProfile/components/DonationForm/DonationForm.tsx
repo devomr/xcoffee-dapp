@@ -45,7 +45,7 @@ export const DonationForm: React.FC<DonnationFromProps> = ({ creator }) => {
 
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md w-full'>
-      <h2 className='text-lg font-extrabold leading-snug mb-3'>Support creator 🤝</h2>
+      <h2 className='text-lg font-extrabold leading-snug mb-3'>Support me 🤝</h2>
       <form className="rounded">
         <div className='flex justify-between border rounded p-3 mb-3'>
           <div className='flex gap-2 items-center'>

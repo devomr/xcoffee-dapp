@@ -91,7 +91,7 @@ export const Dashboard = () => {
       <div className='px-8 mt-5 min-h-screen sm:px-20'>
         <div className='flex flex-1 flex-col rounded bg-white p-6 '>
           <h1 className='text-xl font-extrabold leading-snug mb-5'>
-            Welcome, {data?.firstName} {data?.lastName}!
+            Welcome back, {data?.firstName} {data?.lastName}!
           </h1>
           <div className='flex gap-5 mb-10'>
             <StatsWidget title={'Supporters'} count={supportersCount} icon={faPeopleGroup}></StatsWidget>
@@ -99,7 +99,7 @@ export const Dashboard = () => {
           </div>
 
           <div className='text-lg font-extrabold leading-snug mb-5'>
-            How your fans supported you over time
+            How fans supported you over time
           </div>
           <div className='p-8 shadow-md rounded-lg'>
             <h2 className='text-md font-bold mb-5'>Donations history</h2>

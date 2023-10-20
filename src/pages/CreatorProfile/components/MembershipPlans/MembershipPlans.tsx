@@ -24,7 +24,7 @@ export const MembershipPlans: React.FC<MembershipPlansProps> = ({ creator, subsc
       <div className='flex flex-col items-center mb-5'>
         <h2 className='text-lg font-bold mb-3'>My membership plans</h2>
         <p className='text-sm text-gray-500'>
-          You want to support me and have access to exclusive benefits? Choose what plan is best for you
+          You want to support me and have access to exclusive benefits? Choose what plan suits best for you
         </p>
       </div>
       {

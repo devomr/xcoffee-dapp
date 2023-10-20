@@ -54,10 +54,10 @@ export const Home = () => {
     <AuthRedirectWrapper requireAuth={false}>
       <div className='flex flex-1 py-8 px-8 bg-white sm:flex-row items-center justify-center sm:px-20 sm:py-40'>
         <div className='flex flex-col items-center justify-center h-full w-full'>
-          <h1 className='text-6xl font-bold leading-snug text-center mb-3'>
-            Get support from your <br /> fans in <span className='text-teal-500 font-extrabold'>EGLD</span>
+          <h1 className='text-7xl font-bold leading-snug text-center mb-3'>
+            Get support from your <br /> fans in <span className='text-teal-500 text-8xl font-extrabold'>EGLD</span>
           </h1>
-          <p className='text-lg text-gray-500 mb-5'>
+          <p className='text-lg text-gray-500 mb-16'>
             Engage with your audience and easily get support from them in crypto currencies.
           </p>
           <Button
@@ -90,7 +90,7 @@ export const Home = () => {
       <div className='flex flex-1 items-center justify-center py-16 px-8 bg-white sm:px-20 '>
         <div className='flex flex-1 flex-col items-center'>
           <h2 className='text-2xl font-extrabold leading-snug mb-3'>Who is using our app?</h2>
-          <p className='text-md text-gray-500 mb-5'>See below which creators joined us recently</p>
+          <p className='text-md text-gray-500 mb-5'>You can see below the creators who joined our platform recently</p>
           {lastCreators.length === 0 ? (
             <p>No results found.</p>
           ) : (
